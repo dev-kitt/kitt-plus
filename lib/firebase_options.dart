@@ -48,8 +48,8 @@ class DefaultFirebaseOptions {
     appId: '1:297658462947:web:109fb89d1b50c678bd4bd6',
     messagingSenderId: '297658462947',
     projectId: 'kitt-plus-ae423',
-    authDomain: 'kitt-plus-ae423.firebaseapp.com',
-    storageBucket: 'kitt-plus-ae423.appspot.com',
+    authDomain: 'https://kitt.plus',
+    storageBucket: 'https://kitt.plus',
     measurementId: 'G-5GK7WTEKQW',
   );
 
@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '297658462947',
     projectId: 'kitt-plus-ae423',
     storageBucket: 'kitt-plus-ae423.appspot.com',
-    iosClientId: '297658462947-vqen1acq17p8m9dfc31rghk5k521q5fk.apps.googleusercontent.com',
+    iosClientId:
+        '297658462947-vqen1acq17p8m9dfc31rghk5k521q5fk.apps.googleusercontent.com',
     iosBundleId: 'com.example.kittPlus',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '297658462947',
     projectId: 'kitt-plus-ae423',
     storageBucket: 'kitt-plus-ae423.appspot.com',
-    iosClientId: '297658462947-vqen1acq17p8m9dfc31rghk5k521q5fk.apps.googleusercontent.com',
+    iosClientId:
+        '297658462947-vqen1acq17p8m9dfc31rghk5k521q5fk.apps.googleusercontent.com',
     iosBundleId: 'com.example.kittPlus',
   );
 }

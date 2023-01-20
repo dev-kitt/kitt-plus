@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kitt_plus/env/env.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:kitt_plus/constand.dart';
-import 'package:clipboard/clipboard.dart';
+//import 'package:clipboard/clipboard.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'model.dart';
 
 Future<void> main() async {
@@ -26,8 +28,11 @@ class MyApp extends StatelessWidget {
 }
 
 const IconData contentCopy = IconData(0xe190, fontFamily: 'MaterialIcons');
-const backgroundColor = Color(0xff343541);
-const botBackgroundColor = Color(0xff444654);
+const backgroundColor = Color.fromRGBO(43, 43, 43, 1);
+const botBackgroundColor = Color.fromRGBO(90, 90, 90, 1);
+const purpAccentColor = Color.fromRGBO(136, 86, 255, 1);
+const pinkAccentColor = Color.fromRGBO(241, 146, 232, 1);
+const neonAccentColor = Color.fromRGBO(105, 219, 136, 1);
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -37,7 +42,7 @@ class ChatPage extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = apiSecretKey;
+  final apiKey = Env.openAiApiKey;
 
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
@@ -66,110 +71,159 @@ Future<String> generateResponse(String prompt) async {
   return newresponse['choices'][0]['text'];
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage>
+    with SingleTickerProviderStateMixin {
   final _textController = TextEditingController();
   final _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   late bool isLoading;
   String paste = '';
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     isLoading = false;
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/kitt_plus_gpt.png',
-              fit: BoxFit.contain,
-              height: 32,
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              labelColor: pinkAccentColor, //<-- selected text color
+              unselectedLabelColor: Colors.white,
+              indicatorColor: purpAccentColor,
+              indicatorWeight: 2,
+              tabs: [
+                Tab(
+                    text: 'Home',
+                    icon: Icon(
+                      Icons.home,
+                      size: 18,
+                    )),
+                Tab(text: 'LinkedIn', icon: Icon(Icons.person)),
+                Tab(text: 'Email', icon: Icon(Icons.email)),
+              ],
             ),
-          ],
-        ),
-      ),
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _buildList(),
-            ),
-            Visibility(
-              visible: isLoading,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(
-                  color: Colors.white,
+            backgroundColor: backgroundColor,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/kitt_plus_gpt.png',
+                  fit: BoxFit.contain,
+                  height: 32,
                 ),
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  _buildInput(),
-                  _buildSubmit(),
-                  _buildCopy(),
-                  _buildPaste(),
+          ),
+          backgroundColor: backgroundColor,
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildList(),
+                ),
+                Visibility(
+                  visible: isLoading,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      _buildInput(),
+                      _buildSubmit(),
+                      //_buildCopy(),
+                      //_buildPaste(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Material(
+            color: backgroundColor,
+            elevation: 16,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom),
+              child: TabBar(
+                indicatorColor: purpAccentColor,
+                indicatorWeight: 5,
+                tabs: <Tab>[
+                  Tab(
+                    icon: Icon(Icons.content_copy),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.content_paste),
+                  ),
                 ],
+                controller: _tabController,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCopy() {
-    return Visibility(
-      visible: !isLoading,
-      child: Container(
-        color: botBackgroundColor,
-        child: IconButton(
-          icon: const Icon(
-            Icons.content_copy,
-            color: Color.fromRGBO(142, 142, 160, 1),
           ),
-          onPressed: () async {
-            // display user input
-            await FlutterClipboard.copy(_textController.text);
-
-            // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Copied!"),duration: Duration(milliseconds: 300),),);
-          },
-        ),
-      ),
-    );
+        ));
   }
 
-  Widget _buildPaste() {
-    return Visibility(
-      visible: !isLoading,
-      child: Container(
-        color: botBackgroundColor,
-        child: IconButton(
-          icon: const Icon(
-            Icons.paste,
-            color: Color.fromRGBO(142, 142, 160, 1),
-          ),
-          onPressed: () async {
-            // display user input
-            final value = await FlutterClipboard.paste();
+  // Widget _buildCopy() {
+  //   return Visibility(
+  //     visible: !isLoading,
+  //     child: Container(
+  //       color: botBackgroundColor,
+  //       child: IconButton(
+  //         icon: const Icon(
+  //           Icons.content_copy,
+  //           color: Color.fromRGBO(142, 142, 160, 1),
+  //         ),
+  //         onPressed: () async {
+  //           // display user input
+  //           await FlutterClipboard.copy(_textController.text);
 
-            setState(() {
-              paste = value;
-            });
-          },
-        ),
-      ),
-    );
-  }
+  //           // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Copied!"),duration: Duration(milliseconds: 300),),);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildPaste() {
+  //   return Visibility(
+  //     visible: !isLoading,
+  //     child: Container(
+  //       color: botBackgroundColor,
+  //       child: IconButton(
+  //         icon: const Icon(
+  //           Icons.paste,
+  //           color: Color.fromRGBO(142, 142, 160, 1),
+  //         ),
+  //         onPressed: () async {
+  //           // display user input
+  //           final value = await FlutterClipboard.paste();
+
+  //           setState(() {
+  //             paste = value;
+  //           });
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildSubmit() {
     return Visibility(
@@ -228,14 +282,16 @@ class _ChatPageState extends State<ChatPage> {
         style: const TextStyle(color: Colors.white),
         controller: _textController,
         decoration: const InputDecoration(
-          fillColor: botBackgroundColor,
-          filled: true,
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-        ),
+            fillColor: botBackgroundColor,
+            filled: true,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            hintStyle: TextStyle(
+                fontSize: 14.0, color: Color.fromARGB(255, 255, 255, 255)),
+            hintText: 'Ask Chat-GPT3 Your Question...'),
       ),
     );
   }
