@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "297658462947",
+    "project_id": "kitt-plus-ae423",
+    "storage_bucket": "kitt-plus-ae423.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297658462947:android:3c6a3892030b2bb5bd4bd6",
+        "android_client_info": {
+          "package_name": "com.example.kitt_plus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297658462947-63uno6cgqkcdk4gv963sgps4umc9i01g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk6rhfY8piQ3RMMvB7hrmOS3Vd4wC4sgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297658462947-63uno6cgqkcdk4gv963sgps4umc9i01g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "297658462947-vqen1acq17p8m9dfc31rghk5k521q5fk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kittPlus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
