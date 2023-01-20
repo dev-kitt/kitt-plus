@@ -105,14 +105,9 @@ class _ChatPageState extends State<ChatPage>
               indicatorColor: purpAccentColor,
               indicatorWeight: 2,
               tabs: [
-                Tab(
-                    text: 'Home',
-                    icon: Icon(
-                      Icons.home,
-                      size: 18,
-                    )),
-                Tab(text: 'LinkedIn', icon: Icon(Icons.person)),
-                Tab(text: 'Email', icon: Icon(Icons.email)),
+                Tab(icon: Icon(Icons.home)),
+                Tab(icon: Icon(Icons.person)),
+                Tab(icon: Icon(Icons.email)),
               ],
             ),
             backgroundColor: backgroundColor,
