@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:kitt_plus/env/env.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 //import 'package:clipboard/clipboard.dart';
-import 'package:footer/footer.dart';
-import 'package:footer/footer_view.dart';
 import 'model.dart';
 
 Future<void> main() async {
@@ -15,14 +14,23 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+// This function is used to update the page title
+void setPageTitle(String title, BuildContext context) {
+  SystemChrome.setApplicationSwitcherDescription(ApplicationSwitcherDescription(
+    label: title,
+    primaryColor: Theme.of(context).primaryColor.value, // This line is required
+  ));
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ChatPage(),
       debugShowCheckedModeBanner: false,
+      title: 'Kitt | PLUS by Made, LLC',
+      home: ChatPage(),
     );
   }
 }
@@ -30,6 +38,7 @@ class MyApp extends StatelessWidget {
 const IconData contentCopy = IconData(0xe190, fontFamily: 'MaterialIcons');
 const backgroundColor = Color.fromRGBO(43, 43, 43, 1);
 const botBackgroundColor = Color.fromRGBO(90, 90, 90, 1);
+const greyAccentColor = Color.fromRGBO(217, 217, 217, 1);
 const purpAccentColor = Color.fromRGBO(136, 86, 255, 1);
 const pinkAccentColor = Color.fromRGBO(241, 146, 232, 1);
 const neonAccentColor = Color.fromRGBO(105, 219, 136, 1);
@@ -95,21 +104,11 @@ class _ChatPageState extends State<ChatPage>
 
   @override
   Widget build(BuildContext context) {
+    setPageTitle('Kitt | PLUS by Made, LLC', context);
     return DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            bottom: TabBar(
-              labelColor: pinkAccentColor, //<-- selected text color
-              unselectedLabelColor: Colors.white,
-              indicatorColor: purpAccentColor,
-              indicatorWeight: 2,
-              tabs: [
-                Tab(icon: Icon(Icons.home)),
-                Tab(icon: Icon(Icons.person)),
-                Tab(icon: Icon(Icons.email)),
-              ],
-            ),
             backgroundColor: backgroundColor,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -163,10 +162,11 @@ class _ChatPageState extends State<ChatPage>
                 indicatorWeight: 5,
                 tabs: <Tab>[
                   Tab(
-                    icon: Icon(Icons.content_copy),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.content_paste),
+                    icon: Image.asset(
+                      'assets/made_footer.png',
+                      fit: BoxFit.contain,
+                      height: 33,
+                    ),
                   ),
                 ],
                 controller: _tabController,
@@ -285,8 +285,8 @@ class _ChatPageState extends State<ChatPage>
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             hintStyle: TextStyle(
-                fontSize: 14.0, color: Color.fromARGB(255, 255, 255, 255)),
-            hintText: 'Ask Chat-GPT3 Your Question...'),
+                fontSize: 12.0, color: Color.fromARGB(255, 255, 255, 255)),
+            hintText: 'Ask Kitt+OpenAI ...'),
       ),
     );
   }
