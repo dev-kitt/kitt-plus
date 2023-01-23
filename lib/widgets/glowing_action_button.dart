@@ -5,7 +5,7 @@ class GlowingActionButton extends StatelessWidget {
     Key? key,
     required this.color,
     required this.icon,
-    this.size = 54,
+    this.size = 45,
     required this.onPressed,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class GlowingActionButton extends StatelessWidget {
               height: size,
               child: Icon(
                 icon,
-                size: 26,
+                size: 18,
                 color: Colors.white,
               ),
             ),

@@ -81,7 +81,7 @@ class _ChatPageState extends State<ChatPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/kitt_plus_gpt.png',
+                  'assets/kitt_plus.png',
                   fit: BoxFit.contain,
                   height: 42,
                 ),
