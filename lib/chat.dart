@@ -4,7 +4,6 @@ import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:kitt_plus/theme.dart';
-import 'package:kitt_plus/widgets/glowing_action_button.dart';
 import 'package:kitt_plus/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +51,14 @@ class _ChatPageState extends State<ChatPage>
   final _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   late bool isLoading;
+  bool isFavorite = false;
   String paste = '';
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
     isLoading = false;
   }
 
@@ -83,7 +83,7 @@ class _ChatPageState extends State<ChatPage>
                 Image.asset(
                   'assets/kitt_plus.png',
                   fit: BoxFit.contain,
-                  height: 42,
+                  height: 33,
                 ),
               ],
             ),
@@ -91,18 +91,63 @@ class _ChatPageState extends State<ChatPage>
               Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
-                    onTap: () {},
-                    child: const Icon(
-                      CupertinoIcons.moon_zzz_fill,
-                      size: 26.0,
-                    ),
-                  )),
-              Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.more_vert),
-                  )),
+                      onTap: () {
+                        isFavorite = !isFavorite;
+                        setState(() {});
+                      },
+                      child: isFavorite
+                          ? const Icon(
+                              CupertinoIcons.moon_zzz_fill,
+                            )
+                          : const Icon(CupertinoIcons.moon_stars_fill))),
+              PopupMenuButton(
+                  // add icon, by default "3 dot" icon
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) {
+                    return [
+                      const PopupMenuItem<int>(
+                        value: 0,
+                        child: Text("Refresh"),
+                      ),
+                      const PopupMenuItem<int>(
+                        value: 1,
+                        child: Text("About"),
+                      ),
+                    ];
+                  },
+                  onSelected: (value) {
+                    if (value == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatPage()),
+                      ).then((value) => setState(() {}));
+                      print("Refresh is selected.");
+                    } else if (value == 1) {
+                      showAboutDialog(
+                          context: context,
+                          applicationName: 'Kitt.Plus OpenAI',
+                          applicationVersion: '0.0.1',
+                          applicationIcon: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(18), // Image border
+                            child: SizedBox.fromSize(
+                              size: const Size.fromRadius(28), // Image radius
+                              child: Image.asset(
+                                'assets/kitt_plus_logo.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          children: <Widget>[
+                            const Text(
+                                'Flutter Chatbot App using the ChatGPT3 Learning Model'),
+                            const Text(
+                                'Developed by Kitt © 2019-2023 Made, LLC'),
+                          ]);
+                      print("About menu is selected.");
+                    }
+                  }),
             ],
           ),
           backgroundColor: AppColors.cardDark,
