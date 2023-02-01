@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+
 import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
 import 'package:http/http.dart' as http;
@@ -68,7 +71,9 @@ class _ChatPageState extends State<ChatPage>
     super.dispose();
   }
 
+  SpeechToText speechToText = SpeechToText();
   bool click = true;
+  var isListening = false;
 
   @override
   Widget build(BuildContext context) {
@@ -220,10 +225,44 @@ class _ChatPageState extends State<ChatPage>
                 ),
               ),
             ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Icon(
-                CupertinoIcons.rocket_fill,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: AvatarGlow(
+                endRadius: 25.0,
+                animate: isListening,
+                duration: const Duration(milliseconds: 2000),
+                glowColor: AppColors.secondary,
+                repeat: true,
+                repeatPauseDuration: const Duration(milliseconds: 100),
+                showTwoGlows: true,
+                child: GestureDetector(
+                  onTapDown: (details) async {
+                    if (!isListening) {
+                      var available = await speechToText.initialize();
+                      if (available) {
+                        setState(() {
+                          isListening = true;
+                          speechToText.listen(
+                            onResult: (result) {
+                              setState(() {
+                                _textController.text = result.recognizedWords;
+                              });
+                            },
+                          );
+                        });
+                      }
+                    }
+                  },
+                  onTapUp: (details) {
+                    setState(() {
+                      isListening = false;
+                    });
+                    speechToText.stop();
+                  },
+                  child: const Icon(
+                    CupertinoIcons.mic_fill,
+                  ),
+                ),
               ),
             ),
           ),
@@ -234,7 +273,7 @@ class _ChatPageState extends State<ChatPage>
                 controller: _textController,
                 style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'Make a request or ask a question...',
+                  hintText: 'Say or type your request...',
                   border: InputBorder.none,
                 ),
               ),

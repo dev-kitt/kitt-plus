@@ -42,6 +42,8 @@ dependencies:
   google_fonts: ^3.0.1
   url_launcher: ^6.1.8
   provider: ^6.0.5
+  avatar_glow: ^2.0.2
+  speech_to_text: ^6.1.1
 
 dev_dependencies:
   flutter_test:
