@@ -356,7 +356,7 @@ class ChatMessageWidget extends StatelessWidget {
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   ),
-                  child: Text(
+                  child: SelectableText(
                     text,
                     style: Theme.of(context)
                         .textTheme
