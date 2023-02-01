@@ -68,6 +68,8 @@ class _ChatPageState extends State<ChatPage>
     super.dispose();
   }
 
+  bool click = true;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -75,7 +77,8 @@ class _ChatPageState extends State<ChatPage>
         child: Scaffold(
           drawer: const NavDrawer(),
           appBar: AppBar(
-            backgroundColor: AppColors.secondary,
+            backgroundColor:
+                (click == false) ? AppColors.textDark : AppColors.secondary,
             shadowColor: AppColors.accent,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +96,9 @@ class _ChatPageState extends State<ChatPage>
                   child: GestureDetector(
                       onTap: () {
                         isFavorite = !isFavorite;
-                        setState(() {});
+                        setState(() {
+                          click = !click;
+                        });
                       },
                       child: isFavorite
                           ? const Icon(
@@ -241,7 +246,7 @@ class _ChatPageState extends State<ChatPage>
               right: 24.0,
             ),
             child: GlowingActionButton(
-              color: AppColors.secondary,
+              color: (click == false) ? AppColors.neon : AppColors.secondary,
               icon: Icons.send_rounded,
               onPressed: () async {
                 // display user input

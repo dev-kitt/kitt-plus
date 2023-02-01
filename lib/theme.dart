@@ -5,8 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 abstract class AppColors {
   static const secondary = Color.fromRGBO(136, 86, 255, 1);
   static const accent = Color.fromRGBO(85, 37, 200, 1);
+  static const neon = Color.fromRGBO(105, 219, 136, 1);
   static const textDark = Color(0xFF53585A);
-  static const textLigth = Color(0xFFF5F5F5);
+  static const textLight = Color(0xFFF5F5F5);
   static const iconLight = Color(0xFFB1B4C0);
   static const iconDark = Color(0xFFB1B3C1);
   static const textHighlight = secondary;
@@ -69,7 +70,7 @@ class AppTheme {
         colorScheme: darkBase.colorScheme.copyWith(secondary: accentColor),
         visualDensity: visualDensity,
         textTheme:
-            GoogleFonts.interTextTheme().apply(bodyColor: AppColors.textLigth),
+            GoogleFonts.interTextTheme().apply(bodyColor: AppColors.textLight),
         backgroundColor: _DarkColors.background,
         appBarTheme: darkBase.appBarTheme.copyWith(
           backgroundColor: Colors.transparent,
@@ -87,7 +88,7 @@ class AppTheme {
         ),
         cardColor: _DarkColors.card,
         primaryTextTheme: const TextTheme(
-          headline6: TextStyle(color: AppColors.textLigth),
+          headline6: TextStyle(color: AppColors.textLight),
         ),
         iconTheme: const IconThemeData(color: AppColors.iconLight),
       );
