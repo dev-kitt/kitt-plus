@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-
 import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
 import 'package:http/http.dart' as http;
@@ -48,6 +47,34 @@ Future<String> generateResponse(String prompt) async {
   return newresponse['choices'][0]['text'];
 }
 
+Future<String> generateImgResponse(String text) async {
+  final apiKey = Env.openAiApiKey;
+
+  var url = Uri.https("api.openai.com", "/v1/images/generations");
+  final response = await http.post(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": "Bearer $apiKey"
+    },
+    body: jsonEncode(
+      {
+        "prompt": text,
+        "n": 1,
+        "size": "256x256",
+      },
+    ),
+  );
+
+  // Do something with the response
+  String utf8Body = utf8.decode(response.bodyBytes);
+
+  // Decode the JSON string
+  Map<String, dynamic> newresponse = jsonDecode(utf8Body);
+
+  return newresponse['data'][0]['url'];
+}
+
 class _ChatPageState extends State<ChatPage>
     with SingleTickerProviderStateMixin {
   final _textController = TextEditingController();
@@ -56,6 +83,7 @@ class _ChatPageState extends State<ChatPage>
   late bool isLoading;
   bool isFavorite = false;
   String paste = '';
+  String image = '';
   late TabController _tabController;
 
   @override
@@ -260,7 +288,7 @@ class _ChatPageState extends State<ChatPage>
                     speechToText.stop();
                   },
                   child: const Icon(
-                    CupertinoIcons.mic_fill,
+                    Icons.mic_rounded,
                   ),
                 ),
               ),
@@ -282,45 +310,107 @@ class _ChatPageState extends State<ChatPage>
           Padding(
             padding: const EdgeInsets.only(
               left: 12,
-              right: 24.0,
+              right: 0,
             ),
             child: GlowingActionButton(
               color: (click == false) ? AppColors.neon : AppColors.secondary,
-              icon: Icons.send_rounded,
+              icon: CupertinoIcons.rocket_fill,
               onPressed: () async {
                 // display user input
-                setState(
-                  () {
-                    _messages.add(
-                      ChatMessage(
-                        text: _textController.text,
-                        chatMessageType: ChatMessageType.user,
-                      ),
-                    );
-                    isLoading = true;
-                  },
-                );
-                var input = _textController.text;
-                _textController.clear();
-                Future.delayed(const Duration(milliseconds: 50))
-                    .then((_) => _scrollDown());
+                if (_textController.text.isNotEmpty) {
+                  setState(
+                    () {
+                      _messages.add(
+                        ChatMessage(
+                          text: _textController.text,
+                          chatMessageType: ChatMessageType.user,
+                        ),
+                      );
+                      isLoading = true;
+                    },
+                  );
+                  var input = _textController.text;
+                  _textController.clear();
+                  Future.delayed(const Duration(milliseconds: 50))
+                      .then((_) => _scrollDown());
 
-                // call chatbot api
-                generateResponse(input).then((value) {
-                  setState(() {
-                    isLoading = false;
-                    // display chatbot response
-                    _messages.add(
-                      ChatMessage(
-                        text: value,
-                        chatMessageType: ChatMessageType.bot,
-                      ),
-                    );
+                  // call chatbot api
+                  generateResponse(input).then((value) {
+                    setState(() {
+                      isLoading = false;
+                      // display chatbot response
+                      _messages.add(
+                        ChatMessage(
+                          text: value,
+                          chatMessageType: ChatMessageType.bot,
+                        ),
+                      );
+                    });
                   });
-                });
-                _textController.clear();
-                Future.delayed(const Duration(milliseconds: 50))
-                    .then((_) => _scrollDown());
+                  _textController.clear();
+                  Future.delayed(const Duration(milliseconds: 50))
+                      .then((_) => _scrollDown());
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Please say or type your request."),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 12,
+              right: 24.0,
+            ),
+            child: GlowingImageButton(
+              color: (click == false) ? AppColors.neon : AppColors.secondary,
+              icon: CupertinoIcons.photo_fill,
+              onPressed: () async {
+                if (_textController.text.isNotEmpty) {
+                  // display user input for image
+                  setState(
+                    () {
+                      _messages.add(
+                        ChatMessage(
+                          text: _textController.text,
+                          chatMessageType: ChatMessageType.user,
+                        ),
+                      );
+                      isLoading = true;
+                    },
+                  );
+                  var input = _textController.text;
+                  _textController.clear();
+                  Future.delayed(const Duration(milliseconds: 50))
+                      .then((_) => _scrollDown());
+
+                  // call chatbot api images
+                  generateImgResponse(input).then((img) {
+                    setState(() {
+                      isLoading = false;
+                      // display chatbot response
+                      _messages.add(
+                        ChatMessage(
+                          text: img,
+                          chatMessageType: ChatMessageType.bot,
+                        ),
+                      );
+                    });
+                  });
+                  _textController.clear();
+                  Future.delayed(const Duration(milliseconds: 50))
+                      .then((_) => _scrollDown());
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          "Please say or type the image you want to generate."),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -346,7 +436,7 @@ class _ChatPageState extends State<ChatPage>
   void _scrollDown() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
     );
   }
@@ -396,17 +486,54 @@ class ChatMessageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(18.0)),
                   ),
-                  child: SelectableText(
-                    text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
+                  child: text.contains("oaidalleapiprodscus")
+                      ? Column(
+                          children: [
+                            Container(
+                                alignment: Alignment.center,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: SizedBox.fromSize(
+                                    child:
+                                        Image.network(text, fit: BoxFit.cover),
+                                  ),
+                                )),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: ElevatedButton.icon(
+                                      icon: const Icon(Icons.download_rounded),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.all(12),
+                                        backgroundColor: AppColors.secondary,
+                                      ),
+                                      onPressed: () {},
+                                      label: const Text("Download"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                      : SelectableText(
+                          text,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
                 ),
               ],
             ),
