@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
@@ -208,6 +214,8 @@ class _ChatPageState extends State<ChatPage>
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
+                      // _downloadImg(),
+                      // _shareImage(),
                       _buildInput(),
                     ],
                   ),
@@ -506,25 +514,6 @@ class ChatMessageWidget extends StatelessWidget {
                                         Image.network(text, fit: BoxFit.cover),
                                   ),
                                 )),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Center(
-                                    child: ElevatedButton.icon(
-                                      icon: const Icon(Icons.download_rounded),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.all(12),
-                                        backgroundColor: AppColors.secondary,
-                                      ),
-                                      onPressed: () {},
-                                      label: const Text("Download"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
                           ],
                         )
                       : SelectableText(

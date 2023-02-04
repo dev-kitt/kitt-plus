@@ -41,9 +41,13 @@ dependencies:
   footer: ^0.0.4
   google_fonts: ^3.0.1
   url_launcher: ^6.1.8
+  path_provider: ^2.0.12
+  permission_handler: ^10.2.0
   provider: ^6.0.5
   avatar_glow: ^2.0.2
   speech_to_text: ^6.1.1
+  screenshot: ^1.3.0
+  share_plus: ^6.3.0
 
 dev_dependencies:
   flutter_test:
