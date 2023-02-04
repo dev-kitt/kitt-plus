@@ -214,8 +214,6 @@ class _ChatPageState extends State<ChatPage>
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      // _downloadImg(),
-                      // _shareImage(),
                       _buildInput(),
                     ],
                   ),
@@ -443,7 +441,7 @@ class _ChatPageState extends State<ChatPage>
 
   void _scrollDown() {
     _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
+      _scrollController.position.extentAfter,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
     );
