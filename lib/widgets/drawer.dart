@@ -24,7 +24,7 @@ class NavDrawer extends StatelessWidget {
                     fit: BoxFit.fill,
                     image: AssetImage('assets/drawer_bg.png'))),
             child: Text(
-              'Kitt+',
+              '°ƀ.',
               style: TextStyle(color: Colors.white, fontSize: 25),
             ),
           ),

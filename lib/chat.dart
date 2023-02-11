@@ -1,12 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
@@ -123,9 +117,9 @@ class _ChatPageState extends State<ChatPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/kitt_plus.png',
+                  'assets/kitt_header.png',
                   fit: BoxFit.contain,
-                  height: 33,
+                  height: 38,
                 ),
               ],
             ),
@@ -140,10 +134,16 @@ class _ChatPageState extends State<ChatPage>
                         });
                       },
                       child: isFavorite
-                          ? const Icon(
-                              CupertinoIcons.moon_zzz_fill,
+                          ? Image.asset(
+                              'assets/kitt_plus_dark.png',
+                              fit: BoxFit.contain,
+                              height: 18,
                             )
-                          : const Icon(CupertinoIcons.moon_stars_fill))),
+                          : Image.asset(
+                              'assets/kitt_plus.png',
+                              fit: BoxFit.contain,
+                              height: 18,
+                            ))),
               PopupMenuButton(
                   // add icon, by default "3 dot" icon
                   icon: const Icon(Icons.more_vert),
@@ -185,7 +185,8 @@ class _ChatPageState extends State<ChatPage>
                           ),
                           children: <Widget>[
                             const Text(
-                                'Flutter Chatbot App using the ChatGPT3 Learning Model'),
+                                'Flutter Chatbot App using the ChatGPT3 deep learning model'),
+                            const Text(' && DALL-E digital image generator.'),
                             const Text(
                                 'Developed by Kitt © 2019-2023 Made, LLC'),
                           ]);
@@ -235,7 +236,7 @@ class _ChatPageState extends State<ChatPage>
                     icon: Image.asset(
                       'assets/made_footer.png',
                       fit: BoxFit.contain,
-                      height: 33,
+                      height: 18,
                     ),
                   ),
                 ],
@@ -307,7 +308,7 @@ class _ChatPageState extends State<ChatPage>
                 controller: _textController,
                 style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'Say or type your request...',
+                  hintText: 'Say or type your request:',
                   border: InputBorder.none,
                 ),
               ),
@@ -320,7 +321,7 @@ class _ChatPageState extends State<ChatPage>
             ),
             child: GlowingActionButton(
               color: (click == false) ? AppColors.neon : AppColors.secondary,
-              icon: CupertinoIcons.rocket_fill,
+              icon: CupertinoIcons.hare_fill,
               onPressed: () async {
                 // display user input
                 if (_textController.text.isNotEmpty) {
