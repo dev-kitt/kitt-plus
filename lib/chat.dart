@@ -125,7 +125,7 @@ class _ChatPageState extends State<ChatPage>
             ),
             actions: <Widget>[
               Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
+                  padding: const EdgeInsets.only(right: 2.0),
                   child: GestureDetector(
                       onTap: () {
                         isFavorite = !isFavorite;
@@ -137,12 +137,12 @@ class _ChatPageState extends State<ChatPage>
                           ? Image.asset(
                               'assets/kitt_plus_dark.png',
                               fit: BoxFit.contain,
-                              height: 18,
+                              height: 15,
                             )
                           : Image.asset(
                               'assets/kitt_plus.png',
                               fit: BoxFit.contain,
-                              height: 18,
+                              height: 15,
                             ))),
               PopupMenuButton(
                   // add icon, by default "3 dot" icon
@@ -178,7 +178,7 @@ class _ChatPageState extends State<ChatPage>
                             child: SizedBox.fromSize(
                               size: const Size.fromRadius(28), // Image radius
                               child: Image.asset(
-                                'assets/kitt_plus_logo.png',
+                                'assets/logo_foreground.png',
                                 fit: BoxFit.cover,
                               ),
                             ),

@@ -39,7 +39,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   envied: ^0.3.0
   footer: ^0.0.4
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   url_launcher: ^6.1.8
   path_provider: ^2.0.12
   permission_handler: ^10.2.0
@@ -58,7 +58,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
 
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/kitt_android.png"
   adaptive_icon_background: "#2b2b2b"
@@ -66,7 +66,7 @@ flutter_icons:
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "web/favicon.png"
+    image_path: "web/favicon.ico"
     background_color: "#8855FF"
     theme_color: "#8855FF"
   windows:

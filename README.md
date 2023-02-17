@@ -1,5 +1,5 @@
 **<h1> kitt.plus | chat-gpt</h1>**
-![Kitt.Plus](/assets/kitt_plus_readme.png "Kitt.Plus by STANDARDmade, LLC")
+![Kitt.Plus](/assets/kittplus_readme.png "Kitt.Plus by STANDARDmade, LLC")
 
 
 
