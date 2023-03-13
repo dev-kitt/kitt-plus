@@ -5,7 +5,7 @@ class GlowingActionButton extends StatelessWidget {
     Key? key,
     required this.color,
     required this.icon,
-    this.size = 38,
+    this.size = 28,
     required this.onPressed,
   }) : super(key: key);
 
@@ -25,7 +25,7 @@ class GlowingActionButton extends StatelessWidget {
           BoxShadow(
             color: color.withOpacity(0.3),
             spreadRadius: 8,
-            blurRadius: 24,
+            blurRadius: 12,
           ),
         ],
       ),
@@ -56,7 +56,7 @@ class GlowingImageButton extends StatelessWidget {
     Key? key,
     required this.color,
     required this.icon,
-    this.size = 38,
+    this.size = 28,
     required this.onPressed,
   }) : super(key: key);
 
@@ -77,7 +77,7 @@ class GlowingImageButton extends StatelessWidget {
           BoxShadow(
             color: color.withOpacity(0.3),
             spreadRadius: 8,
-            blurRadius: 24,
+            blurRadius: 12,
           ),
         ],
       ),

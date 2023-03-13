@@ -137,12 +137,12 @@ class _ChatPageState extends State<ChatPage>
                           ? Image.asset(
                               'assets/kitt_plus_dark.png',
                               fit: BoxFit.contain,
-                              height: 15,
+                              height: 13,
                             )
                           : Image.asset(
                               'assets/kitt_plus.png',
                               fit: BoxFit.contain,
-                              height: 15,
+                              height: 13,
                             ))),
               PopupMenuButton(
                   // add icon, by default "3 dot" icon
@@ -166,7 +166,6 @@ class _ChatPageState extends State<ChatPage>
                         MaterialPageRoute(
                             builder: (context) => const ChatPage()),
                       ).then((value) => setState(() {}));
-                      print("Refresh is selected.");
                     } else if (value == 1) {
                       showAboutDialog(
                           context: context,
@@ -190,7 +189,6 @@ class _ChatPageState extends State<ChatPage>
                             const Text(
                                 'Developed by Kitt © 2019-2023 Made, LLC'),
                           ]);
-                      print("About menu is selected.");
                     }
                   }),
             ],
