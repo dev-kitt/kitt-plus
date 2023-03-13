@@ -443,7 +443,7 @@ class _ChatPageState extends State<ChatPage>
   void _scrollDown() {
     _scrollController.animateTo(
       _scrollController.position.extentAfter,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 100),
       curve: Curves.easeOut,
     );
   }
