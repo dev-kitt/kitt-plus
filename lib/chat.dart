@@ -187,7 +187,7 @@ class _ChatPageState extends State<ChatPage>
                                 'Flutter Chatbot App using the ChatGPT3 deep learning model'),
                             const Text(' && DALL-E digital image generator.'),
                             const Text(
-                                'Developed by Kitt © 2019-2023 Made, LLC'),
+                                'Developed by Kitt © 2019-2023 Kitt, LLC'),
                           ]);
                     }
                   }),

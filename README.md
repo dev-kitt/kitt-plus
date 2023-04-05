@@ -1,11 +1,11 @@
 **<h1> kitt.plus | chat-gpt</h1>**
-![Kitt.Plus](/assets/kittplus_readme.png "Kitt.Plus by STANDARDmade, LLC")
+![Kitt.Plus](/assets/kittplus_readme.png "Kitt.Plus by Kitt, LLC")
 
 
 
 ## <span style="color:#555555"><u> **OVERVIEW** </u></span>
 [kitt.plus](https://kitt.plus) [`Flutter OpenAI GPT Chatbot`]
-by STANDARDmade, LLC
+by Kitt, LLC
 - Flutter & Dart
   - OpenAI Stuff
   - Chat-GPT Stuff
@@ -28,7 +28,7 @@ If any issues arise for any of the below mentioned areas, please draft a strongl
 
 
 ## <span style="color:#555555"><u> **CORE DEVELPOMENT** </u></span>
-**kitt.plus |** by STANDARDmade, LLC + :taco::taco::taco:
+**kitt.plus |** by Kitt, LLC + :taco::taco::taco:
 
 
 ``` dart
