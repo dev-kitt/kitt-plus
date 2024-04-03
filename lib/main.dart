@@ -25,9 +25,9 @@ void setPageTitle(String title, BuildContext context) {
 
 class MyApp extends StatelessWidget {
   const MyApp({
-    Key? key,
+    super.key,
     required this.appTheme,
-  }) : super(key: key);
+  });
 
   final AppTheme appTheme;
 
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       darkTheme: appTheme.dark,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      title: 'Kitt | PLUS by Made, LLC',
+      title: 'Made by | Kitt, LLC',
       home: const ChatPage(),
     );
   }

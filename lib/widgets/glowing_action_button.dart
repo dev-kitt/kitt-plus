@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class GlowingActionButton extends StatelessWidget {
   const GlowingActionButton({
-    Key? key,
+    super.key,
     required this.color,
     required this.icon,
     this.size = 28,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final Color color;
   final IconData icon;
@@ -53,12 +53,12 @@ class GlowingActionButton extends StatelessWidget {
 
 class GlowingImageButton extends StatelessWidget {
   const GlowingImageButton({
-    Key? key,
+    super.key,
     required this.color,
     required this.icon,
     this.size = 28,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final Color color;
   final IconData icon;

@@ -4,9 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../theme.dart';
 
 final Uri _url1 = Uri.parse('https://kitt.llc');
-final Uri _url2 = Uri.parse('https://kitt.one');
-final Uri _url3 = Uri.parse('https://github.com/standard-made/kitt-plus');
-final Uri _url4 = Uri.parse('https://kitt.pro');
+final Uri _url2 = Uri.parse('https://github.com/dev-kitt/kitt-one');
+final Uri _url3 = Uri.parse('https://github.com/dev-kitt/kitt-plus');
+final Uri _url4 = Uri.parse('https://github.com/dev-kitt/kitt-pro');
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});

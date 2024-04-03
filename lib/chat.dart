@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'model.dart';
 import 'package:kitt_plus/env/env.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 import 'package:kitt_plus/theme.dart';
 import 'package:kitt_plus/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -17,62 +17,23 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-Future<String> generateResponse(String prompt) async {
-  final apiKey = Env.openAiApiKey;
-
-  var url = Uri.https("api.openai.com", "/v1/completions");
-  final response = await http.post(
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": "Bearer $apiKey"
-    },
-    body: json.encode({
-      "model": "text-davinci-003",
-      "prompt": prompt,
-      'temperature': 0,
-      'max_tokens': 2000,
-      'top_p': 1,
-      'frequency_penalty': 0.0,
-      'presence_penalty': 0.0,
-    }),
+Future generateResponse(String prompt) async {
+  final apiKey = Env.googleAiApiKey;
+  final generationConfig = GenerationConfig(
+    stopSequences: ["red"],
+    maxOutputTokens: 200,
+    temperature: 0.9,
+    topP: 0.1,
+    topK: 16,
   );
-
-  // Do something with the response
-  String utf8Body = utf8.decode(response.bodyBytes);
-
-  // Decode the JSON string
-  Map<String, dynamic> newresponse = jsonDecode(utf8Body);
-
-  return newresponse['choices'][0]['text'];
-}
-
-Future<String> generateImgResponse(String text) async {
-  final apiKey = Env.openAiApiKey;
-
-  var url = Uri.https("api.openai.com", "/v1/images/generations");
-  final response = await http.post(
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": "Bearer $apiKey"
-    },
-    body: jsonEncode(
-      {
-        "prompt": text,
-        "n": 1,
-        "size": "256x256",
-      },
-    ),
+  final model = GenerativeModel(
+    model: 'gemini-pro',
+    apiKey: apiKey,
+    generationConfig: generationConfig,
   );
-
-  // Do something with the response
-  String utf8Body = utf8.decode(response.bodyBytes);
-
-  // Decode the JSON string
-  Map<String, dynamic> newresponse = jsonDecode(utf8Body);
-
-  return newresponse['data'][0]['url'];
+  final response = await model.generateContent([Content.text(prompt)]);
+  // Extracting the text from the GenerateContentResponse object
+  return response.text;
 }
 
 class _ChatPageState extends State<ChatPage>
@@ -83,7 +44,6 @@ class _ChatPageState extends State<ChatPage>
   late bool isLoading;
   bool isFavorite = false;
   String paste = '';
-  String image = '';
   late TabController _tabController;
 
   @override
@@ -137,12 +97,12 @@ class _ChatPageState extends State<ChatPage>
                           ? Image.asset(
                               'assets/kitt_plus_dark.png',
                               fit: BoxFit.contain,
-                              height: 13,
+                              height: 38,
                             )
                           : Image.asset(
                               'assets/kitt_plus.png',
                               fit: BoxFit.contain,
-                              height: 13,
+                              height: 38,
                             ))),
               PopupMenuButton(
                   // add icon, by default "3 dot" icon
@@ -169,8 +129,8 @@ class _ChatPageState extends State<ChatPage>
                     } else if (value == 1) {
                       showAboutDialog(
                           context: context,
-                          applicationName: 'Kitt.Plus OpenAI',
-                          applicationVersion: '0.0.1',
+                          applicationName: 'Kitt.Plus GoogleAI',
+                          applicationVersion: '0.1.1',
                           applicationIcon: ClipRRect(
                             borderRadius:
                                 BorderRadius.circular(18), // Image border
@@ -184,10 +144,8 @@ class _ChatPageState extends State<ChatPage>
                           ),
                           children: <Widget>[
                             const Text(
-                                'Flutter Chatbot App using the ChatGPT3 deep learning model'),
-                            const Text(' && DALL-E digital image generator.'),
-                            const Text(
-                                'Developed by Kitt © 2019-2023 Kitt, LLC'),
+                                'Flutter Chatbot App built with Gemini Pro'),
+                            const Text('Developed by Kitt, LLC ©🐿️ 2019-2024'),
                           ]);
                     }
                   }),
@@ -250,6 +208,7 @@ class _ChatPageState extends State<ChatPage>
       child: Row(
         children: [
           Container(
+            margin: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               border: Border(
                 right: BorderSide(
@@ -261,13 +220,14 @@ class _ChatPageState extends State<ChatPage>
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: AvatarGlow(
-                endRadius: 25.0,
-                animate: isListening,
+                glowRadiusFactor: 0.8,
+                glowShape: BoxShape.circle,
+                animate: true,
                 duration: const Duration(milliseconds: 2000),
                 glowColor: AppColors.secondary,
                 repeat: true,
-                repeatPauseDuration: const Duration(milliseconds: 100),
-                showTwoGlows: true,
+                startDelay: const Duration(milliseconds: 100),
+                glowCount: 2,
                 child: GestureDetector(
                   onTapDown: (details) async {
                     if (!isListening) {
@@ -306,7 +266,7 @@ class _ChatPageState extends State<ChatPage>
                 controller: _textController,
                 style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'Say or type your request:',
+                  hintText: 'Tap to talk or type your request:',
                   border: InputBorder.none,
                 ),
               ),
@@ -315,7 +275,7 @@ class _ChatPageState extends State<ChatPage>
           Padding(
             padding: const EdgeInsets.only(
               left: 12,
-              right: 0,
+              right: 12,
             ),
             child: GlowingActionButton(
               color: (click == false) ? AppColors.neon : AppColors.secondary,
@@ -358,61 +318,7 @@ class _ChatPageState extends State<ChatPage>
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text("Please say or type your request."),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 12,
-              right: 24.0,
-            ),
-            child: GlowingImageButton(
-              color: (click == false) ? AppColors.neon : AppColors.secondary,
-              icon: CupertinoIcons.photo_fill,
-              onPressed: () async {
-                if (_textController.text.isNotEmpty) {
-                  // display user input for image
-                  setState(
-                    () {
-                      _messages.add(
-                        ChatMessage(
-                          text: _textController.text,
-                          chatMessageType: ChatMessageType.user,
-                        ),
-                      );
-                      isLoading = true;
-                    },
-                  );
-                  var input = _textController.text;
-                  _textController.clear();
-                  Future.delayed(const Duration(milliseconds: 50))
-                      .then((_) => _scrollDown());
-
-                  // call chatbot api images
-                  generateImgResponse(input).then((img) {
-                    setState(() {
-                      isLoading = false;
-                      // display chatbot response
-                      _messages.add(
-                        ChatMessage(
-                          text: img,
-                          chatMessageType: ChatMessageType.bot,
-                        ),
-                      );
-                    });
-                  });
-                  _textController.clear();
-                  Future.delayed(const Duration(milliseconds: 50))
-                      .then((_) => _scrollDown());
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          "Please say or type the image you want to generate."),
+                      content: Text("Please enter a valid request"),
                     ),
                   );
                 }
@@ -458,7 +364,7 @@ class ChatMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       color: chatMessageType == ChatMessageType.bot
           ? AppColors.textDark
           : AppColors.cardDark,
@@ -467,9 +373,9 @@ class ChatMessageWidget extends StatelessWidget {
         children: <Widget>[
           chatMessageType == ChatMessageType.bot
               ? Container(
-                  margin: const EdgeInsets.only(right: 16.0),
+                  margin: const EdgeInsets.only(right: 18.0),
                   child: CircleAvatar(
-                    backgroundColor: const Color.fromRGBO(136, 85, 255, 1),
+                    backgroundColor: Colors.transparent,
                     child: Image.asset(
                       'assets/bot.png',
                       scale: 0.5,
@@ -477,9 +383,9 @@ class ChatMessageWidget extends StatelessWidget {
                   ),
                 )
               : Container(
-                  margin: const EdgeInsets.only(right: 16.0),
+                  margin: const EdgeInsets.only(right: 18.0),
                   child: CircleAvatar(
-                    backgroundColor: const Color.fromRGBO(43, 43, 43, 1),
+                    backgroundColor: Colors.transparent,
                     child: Image.asset(
                       'assets/kitt_bot.png',
                       scale: 0.5,
@@ -495,7 +401,7 @@ class ChatMessageWidget extends StatelessWidget {
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(18.0)),
                   ),
-                  child: text.contains("oaidalleapiprodscus")
+                  child: text.contains("generativelanguage")
                       ? Column(
                           children: [
                             Container(
