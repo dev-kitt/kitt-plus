@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'chat.dart';
-import 'firebase_options.dart';
+import 'package:kitt_plus/pages/chat.dart';
+import 'services/firebase_service.dart';
 import 'package:flutter/material.dart';
-import 'package:kitt_plus/theme.dart';
+import 'package:kitt_plus/services/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
