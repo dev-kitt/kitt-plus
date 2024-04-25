@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../theme.dart';
+import 'package:kitt_plus/services/theme.dart';
 
 final Uri _url1 = Uri.parse('https://kitt.llc');
 final Uri _url2 = Uri.parse('https://github.com/dev-kitt/kitt-one');
-final Uri _url3 = Uri.parse('https://github.com/dev-kitt/kitt-plus');
-final Uri _url4 = Uri.parse('https://github.com/dev-kitt/kitt-pro');
+final Uri _url3 = Uri.parse('https://github.com/kitt-llc');
+final Uri _url4 = Uri.parse('https://github.com/dev-kitt/kitt-plus');
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -22,7 +22,7 @@ class NavDrawer extends StatelessWidget {
                 color: AppColors.secondary,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/drawer_bg.png'))),
+                    image: AssetImage('assets/home/drawer_bg.png'))),
             child: Text(
               '°ƀ.',
               style: TextStyle(color: Colors.white, fontSize: 25),
@@ -44,12 +44,12 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(CupertinoIcons.moon_zzz_fill),
-            title: Text('Kitt.plus'),
+            title: Text('Kitt.pro'),
             onTap: _launchUrl3,
           ),
           ListTile(
             leading: Icon(CupertinoIcons.moon_stars_fill),
-            title: Text('Kitt.pro'),
+            title: Text('Kitt.plus'),
             onTap: _launchUrl4,
           ),
         ],

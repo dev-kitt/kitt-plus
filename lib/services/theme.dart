@@ -6,13 +6,17 @@ abstract class AppColors {
   static const secondary = Color.fromRGBO(136, 86, 255, 1);
   static const accent = Color.fromRGBO(85, 37, 200, 1);
   static const neon = Color.fromRGBO(105, 219, 136, 1);
+  static const peach = Color.fromRGBO(222, 148, 129, 1);
+  static const burnt = Color.fromRGBO(39, 37, 31, 1);
   static const textDark = Color(0xFF53585A);
   static const textLight = Color(0xFFF5F5F5);
   static const iconLight = Color(0xFFB1B4C0);
   static const iconDark = Color(0xFFB1B3C1);
   static const textHighlight = secondary;
-  static const cardLight = Color(0xFFF9FAFE);
   static const cardDark = Color.fromRGBO(43, 43, 43, 1);
+  static const cardLight = Color.fromRGBO(216, 216, 216, 1);
+  static const cardPurp = Color.fromRGBO(221, 216, 225, 1);
+  static const cardPeach = Color.fromRGBO(250, 223, 219, 1);
 }
 
 abstract class _LightColors {

@@ -1,15 +1,17 @@
-**<h1> kitt.plus | chat-gpt</h1>**
+**<h1> kitt.plus | ai.chatbot</h1>**
 ![Kitt.Plus](/assets/kittplus_readme.png "Kitt.Plus by Kitt, LLC")
 
 
 
 ## <span style="color:#555555"><u> **OVERVIEW** </u></span>
-[kitt.plus](https://kitt.plus) [`Flutter Google AI Gemini Chatbot`]
-by Kitt, LLC
-- Flutter & Dart
+[kitt.ether](https://kitt.plus) [`Flutter Google AI & Open AI Chatbot` ]
+by Kitt, LLC :taco::chipmunk:
+  - Flutter & Dart
   - Google AI Stuff
   - Gemini Pro Stuff
-  - :taco: Stuff
+  - Open AI Stuff
+  - GPT/DALL-E Stuff
+  - :peach: ///ATL
 
 
 ## <span style="color:#555555"><u> **POINTS OF CONTACT** </u></span>
@@ -22,9 +24,12 @@ If any issues arise for any of the below mentioned areas, please draft a strongl
 | ------------- |:-------------:|
 | Flutter | ^0.13.5 |
 | Firebase Core | ^2.4.1 |
-| GoogleAI | v1 |
+| GoogleAI | v |
 | Learning Model | gemini-pro |
 | Image Model | gemini-pro-vision |
+| OpenAI | v |
+| Learning Model | gpt-3.5-turbo |
+| Image Model | dall-e-3 |
 
 
 
