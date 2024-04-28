@@ -23,6 +23,7 @@ migrate_working_dir/
 
 # Keys
 *.env
+/lib/env/
 
 # Flutter/Dart/Pub related
 **/doc/api/
