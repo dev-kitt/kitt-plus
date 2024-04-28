@@ -1,0 +1,20 @@
+# curl -X POST \
+#   'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=someKEY>' \
+#     -H 'Content-Type: application/json' \
+#     -d '{
+#       "contents": [{
+#         "parts":[{
+#           "text": "Write a story about a secret squirrel who is lord of the oak."
+#         }]
+#       }]
+#     }' | jq
+
+
+curl -X POST https://api.openai.com/v1/completions \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer someTOKEN" \
+     -d '{
+           "model": "gpt-3.5-turbo-instruct",
+           "prompt": "Once upon a time",
+           "max_tokens": 50
+         }' | jq
